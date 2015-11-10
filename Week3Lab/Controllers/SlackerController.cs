@@ -20,7 +20,7 @@ namespace Week3Lab.Controllers
             if (messages == null)
             {
                 messages = new List<Message>();
-                memoryCache.Set("messages", messages, DateTimeOffset.Now.AddSeconds(10));
+                memoryCache.Set("messages", messages, DateTimeOffset.Now.AddHours(10));
             }
 
             return messages;

@@ -9,63 +9,71 @@ namespace labcontroller
 {
     public class Message
     {
-
+        public string UserName { get; internal set; }
+        public string Text { get; internal set; }
+        public int Id { get; internal set; }
+        public DateTime DatePosted { get; internal set; }
     }
     class Program
     {
+        private static RestRequest request;
+
+        //public static object msg;
+        //private static IRestRequest request;
+
         static void Main(string[] args)
         {
 
-
-
-            //var client = new RestClient("http://deckofcardsapi.com");
-            //var newDeckAndShuffle = new RestRequest("api/deck/new/shuffle/?deck_count=1", Method.GET);
-            //DeckResponse response = client.Execute<DeckResponse>(newDeckAndShuffle).Data;
-
-
-            //while (true)
-            //    message msg = new message();
-            //msg text = "hello"
-
-
-
-
-
-            var client = new RestClient("http://localhost:51500/");
-
-
-            var request = new RestRequest("api/message", Method.POST)
+            while (true)
             {
-                requestformat = dataformat.Json);
+                Console.WriteLine(" Welcome to Slacker");
+                Console.WriteLine(" Would you like to Submit a post or Read a post?");
+                Console.WriteLine(" type Submit or Read");
+                //Console.ReadLine();
 
 
-            request.addJsosngBody(msg);
+                var client = new RestClient("http://localhost:51500/");
+
+
+                Message msg = new Message();
+                if (Console.ReadLine() == "Submit")
+                {
+
+                    Console.WriteLine("please enter UserName");
+                    msg.UserName = Console.ReadLine();
+                    Console.WriteLine("please enter Text");
+                    msg.Text = Console.ReadLine();
+                    msg.DatePosted = DateTime.Now;
+                    var request = new RestRequest("api/messages/", Method.POST)
+                    { RequestFormat = DataFormat.Json };
+                    request.AddJsonBody(msg);
+                    var response = client.Execute<Message>(request);
+                    break;
+                }
+
+                else if (Console.ReadLine() == "Read")
+                {
+
+                   // var response = client.Execute<Message>(request);
+                    request = new RestRequest("api/messages", Method.GET);
+                    var messages = client.Execute<List<Message>>(request).Data;
+                    messages.ForEach(x => Console.WriteLine(x));
+                    //foreach (var x in messages)
+                    //{
+
+                    //    Console.WriteLine(x.UserName);
+                    //    Console.WriteLine(x.Text);
+                    //    Console.WriteLine(x.DatePosted);
+                    //    Console.ReadLine();
+                    //}
+                }
+                Console.ReadLine();
+
+
+
+                Console.Clear();
+                //
+            }
         }
-
-        var response = client.executes<message>(request);
-
-
-        request = new RestRequest("api/message",Method.GET)
-            var messages = client.Execute<List<Messages>(request).Data;
-
-        Console.Clear();
-            message.foreach(x=>Console.WriteLine(x));
-
-
-
-            //Console.WriteLine(" Welcome to Slacker");
-            //Console.WriteLine(" Would you like to Submit a post or Read a post?");
-            //Console.WriteLine(" type Submit or Read");
-            //Console.ReadLine();
-            //if (Console.ReadLine() == "Read")
-            //{
-            //}
-            //else if (Console.ReadLine() == "Submit")
-            //{
-            //    Console.WriteLine("please enter username");
-            //    Console.WriteLine("please enter text");
-            //}
-            //Console.ReadLine();
-        }
-}
+    }
 }
